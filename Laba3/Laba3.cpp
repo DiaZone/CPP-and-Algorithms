@@ -140,7 +140,7 @@ void searching(int N, Worker* workers) {
     search_key = surname_key + " " + name_key + " " + patronymics_key;
     for (int i = 0; i < N; i++) {
         if (workers[i].full_name == search_key) {
-            cout << setiosflags(ios::left) << "ID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
+            cout << setiosflags(ios::left) << "\nID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
                 << workers[i].date.month << setw(4) << workers[i].date.year << endl;
         }
     }
@@ -163,8 +163,8 @@ void crossSection(int N, Worker* workers) {
     //type_key = 0, то выполняем срез больше указанного года
     case 0:
         for (int i = 0; i < N; i++) {
-            if (workers[i].date.year < year_key) {
-                cout << setiosflags(ios::left) << "ID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
+            if (workers[i].date.year > year_key) {
+                cout << setiosflags(ios::left) << "\nID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
                     << workers[i].date.month << setw(4) << workers[i].date.year << endl;
             }
         }
@@ -173,8 +173,8 @@ void crossSection(int N, Worker* workers) {
     //type_key = 1, то выполняем срез меньше указанного года
     case 1:
         for (int i = 0; i < N; i++) {
-            if (workers[i].date.year > year_key) {
-                cout << setiosflags(ios::left) << "ID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
+            if (workers[i].date.year < year_key) {
+                cout << setiosflags(ios::left) << "\nID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
                     << workers[i].date.month << setw(4) << workers[i].date.year << endl;
             }
         }
@@ -245,11 +245,11 @@ void selector(int N, Worker* workers) {
     *@param key - ключ работы меню
     */
     int key = 0;
-    cout << "[0] Поиск по ФИО (Вводить полностью)\n"
+    cout << "\n[0] Поиск по ФИО (Вводить полностью)\n"
         "[1] Срез работников по году рождения\n"
         "[2] Статистика по полу\n"
         "[3] Сортировка массива по возрастанию\n"
-        "[4] Выход из программы"<< endl;
+        "[4] Выход из программы\n"<< endl;
     cin >> key;
     switch (key) {
     case 0:
