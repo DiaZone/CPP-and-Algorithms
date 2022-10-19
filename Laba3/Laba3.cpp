@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <windows.h>
+#include <limits>
 using namespace std;
 
 
@@ -126,20 +127,17 @@ string randomFIO(int sexid) {
 
 void searching(int N, Worker* workers) {
     /*
-    *@param name_key - имя человека, которого мы будем искать
-    *@param surname_key - фамилия человека, которого мы будем искать
-    *@param patronymics_key - отчество человека, которого мы будем искать
-    *@param search_key - полное ФИО человека, которого мы будем искать
+    *@param FIO - ФИО человека, которого проверяем на совпадение с поиском
+    *@param search_key - запрос для поиска человека
     */
-    string name_key = "";
-    string surname_key = "";
-    string patronymics_key = "";
     string search_key = "";
+    string FIO = "";
     cout << "Введите фамилию, имя и отчество для поиска:" << endl;
-    cin >> surname_key >> name_key >> patronymics_key;
-    search_key = surname_key + " " + name_key + " " + patronymics_key;
+    cin.ignore();
+    getline(cin, search_key);
     for (int i = 0; i < N; i++) {
-        if (workers[i].full_name == search_key) {
+        FIO = workers[i].full_name;
+        if (!FIO.find(search_key)) {
             cout << setiosflags(ios::left) << "\nID: " << i + 1 << " " << setw(35) << workers[i].full_name << setw(8) << workers[i].sex << setw(3) << workers[i].date.day << setw(3)
                 << workers[i].date.month << setw(4) << workers[i].date.year << endl;
         }
