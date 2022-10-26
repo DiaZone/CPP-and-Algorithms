@@ -169,6 +169,7 @@ int main()
 {
     /*
     *@param key - ключ выбора добавления
+    *@param count - количество животных для добавления
     */
     srand(time(0)); //Инициализация рандомайзера
     SetConsoleCP(1251); //Поддержка ввода на русском языке
@@ -180,12 +181,12 @@ int main()
     int count = 0;
     cout << "\nДобавить новое животное?\n[0] Нет\n[1] Да\n";
     cin >> key;
-    cout << "\nСколько животных хотите добавить?\n";
-    cin >> count;
     switch (key) {
     case 0:
         break;
     case 1:
+        cout << "\nСколько животных хотите добавить?\n";
+        cin >> count;
         ContactZoo.newArray(count); //Создание массива
         for (int i = count; i > 0; i--) {
             ContactZoo.addNewAnimal(i); //Добавление животного
