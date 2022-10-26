@@ -83,21 +83,21 @@ public:
         array_animals = new Animal[N];
     }
 
-    void newArray() { //Создание нового массива при добавлении нового животного пользователем
-        this->N = this->N++; //Увеличиваем размерность
+    void newArray(int count) { //Создание нового массива при добавлении нового животного пользователем
+        N = N + count; //Увеличиваем размерность
         new_array_animals = new Animal[N]; //Создаем новый временный массив
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < N - count; i++) {
             new_array_animals[i] = array_animals[i]; //Копируем старый массив в новый
         }
         delete[] array_animals; //Очистка старого массива
         array_animals = new Animal[N]; //Создаем главный массив
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < N - count; i++) {
             array_animals[i] = new_array_animals[i]; //Перезаписываем из временного массива в главный
         }
         delete[] new_array_animals; //Очистка временного массива
     }
 
-    void addNewAnimal(){
+    void addNewAnimal(int count){
         /*
         *@param key - ключ выбора животного
         *@param name - кличка животного
@@ -121,8 +121,8 @@ public:
             Cat * cat = new Cat; //Создаем объект кота
             cat->name = name; //Вводим имя
             cat->age = age; //Вводим возраст
-            array_animals[this->N - 1].panimal = static_cast<Cat*>(cat); //Смена указателя на тип животного
-            array_animals[this->N - 1].animal_type = "Кошак"; //Запись типа животного
+            array_animals[this->N - count].panimal = static_cast<Cat*>(cat); //Смена указателя на тип животного
+            array_animals[this->N - count].animal_type = "Кошак"; //Запись типа животного
             cat->animalPrint(); //Вывод характеристик животного
         }
 
@@ -131,8 +131,8 @@ public:
             Dog* dog = new Dog;
             dog->name = name;
             dog->age = age;
-            array_animals[this->N - 1].panimal = static_cast<Dog*>(dog);
-            array_animals[this->N - 1].animal_type = "Собака";
+            array_animals[this->N - count].panimal = static_cast<Dog*>(dog);
+            array_animals[this->N - count].animal_type = "Собака";
             dog->animalPrint();
         }
         
@@ -141,8 +141,8 @@ public:
             Wombat* wombat = new Wombat;
             wombat->name = name;
             wombat->age = age;
-            array_animals[this->N - 1].panimal = static_cast<Wombat*>(wombat);
-            array_animals[this->N - 1].animal_type = "Вомбат";
+            array_animals[this->N - count].panimal = static_cast<Wombat*>(wombat);
+            array_animals[this->N - count].animal_type = "Вомбат";
             wombat->animalPrint();
         }
         else{
@@ -165,7 +165,6 @@ void zooPrinting(Zoo zoo); //Вывод шапки таблицы
 void zooModeling(Zoo zoo); //Модель работы зоопарка с выводом в табличном виде
 
 
-
 int main()
 {
     /*
@@ -178,15 +177,20 @@ int main()
     zooGenerator(ContactZoo); //Генерация животных
    
     int key = 0;
+    int count = 0;
     cout << "\nДобавить новое животное?\n[0] Нет\n[1] Да\n";
     cin >> key;
+    cout << "\nСколько животных хотите добавить?\n";
+    cin >> count;
     switch (key) {
     case 0:
         break;
     case 1:
-        ContactZoo.newArray(); //Создание массива
-        ContactZoo.addNewAnimal(); //Добавление животного
-        cout << "------------------------------------------------------------";
+        ContactZoo.newArray(count); //Создание массива
+        for (int i = count; i > 0; i--) {
+            ContactZoo.addNewAnimal(i); //Добавление животного
+            cout << "------------------------------------------------------------";
+        }
         printAllAnimals(ContactZoo); //Вывод в консоль животного
         break;
     default:
@@ -196,6 +200,7 @@ int main()
 
     zooPrinting(ContactZoo);
     zooModeling(ContactZoo);
+    delete[] ContactZoo.array_animals;
 }
 
 string randomName(int type) {
