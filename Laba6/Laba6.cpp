@@ -49,11 +49,29 @@ using namespace std;
 class Target {
 public:
     double distance = 0.0; //Дистанция до мишени
+    double chance = 0.0;
 
     //Вывод дистанции
     void printDistance() {
         cout << "\nДистанция до мишени: " << distance << endl;
     }
+
+    //Рассчет шанса попадания по мишени
+    void chanceCalc(double sighting_range) {
+        /*
+        *@param my_chance - шанс на попадание в цель
+        *return - количество попаданий
+        */
+        //Расчет шанса(сама формула была подобрана методом подстановки, учитывая что оружия должны и попадать, и промахиваться(возможно не самая лучшая))
+        chance = (double)(1 / exp((distance - sighting_range) * 0.003));
+
+        //Если у нас оружие стреляет дальше, чем стоит цель, то логично, что оно попадет в неё
+        if (chance > 1) {
+            chance = 1;
+        }
+        cout << "Шанс попадания: " << chance << endl;
+
+    };
 };
 
 //Оружие
@@ -76,31 +94,11 @@ public:
     virtual double reloadMagazine(int rounds) = 0;
 
     //Функция стрельбы(только для одиночного режима);
-    virtual int shooting(Target target, int distance) = 0;
+    virtual int shooting(Target target, int distance, double chance) = 0;
 
     //Функция вывода названия оружия
     virtual void printInfo() {
         cout << weapon_name << endl;
-    };
-
-    //Функция расчета шанса для попадания
-    double chanceCalc(double dist) {
-        /*
-        *@param my_chance - шанс на попадание в цель
-        *return - количество попаданий
-        */
-        double my_chance = 0;
-
-        //Расчет шанса(сама формула была подобрана методом подстановки, учитывая что оружия должны и попадать, и промахиваться(возможно не самая лучшая))
-        my_chance = (double)(1 / exp((dist - sighting_range) * 0.003));
-
-        //Если у нас оружие стреляет дальше, чем стоит цель, то логично, что оно попадет в неё
-        if (my_chance > 1) {
-            my_chance = 1;
-        }
-        cout << "Шанс попадания: " << my_chance << endl;
-        return my_chance;
-
     };
 
     //Случайный режим стрельбы(работает только для автомата)
@@ -138,7 +136,7 @@ public:
         }
 
     //Функция стрельбы(для одинарного режима)
-    int shooting(Target target, int distance){
+    int shooting(Target target, int distance, double chance){
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -149,7 +147,6 @@ public:
         int count_of_hits = 0;
         int patron = 0;
         double chance_checker;
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine; //Получаем количество патрон в магазине
 
         //Проходимся по всем доступным патронам
@@ -262,7 +259,7 @@ public:
     }
 
     //Функция стрельбы(для одинарного режима)
-    int shooting(Target target, int distance) {
+    int shooting(Target target, int distance, double chance) {
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -273,7 +270,6 @@ public:
         int count_of_hits = 0;
         int patron = 0;
         double chance_checker;
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine; //Получаем количество патрон в магазине
 
         //Проходимся по всем доступным патронам
@@ -381,7 +377,7 @@ public:
     }
     
     //Функция стрельбы(для одинарного режима)
-    int shooting(Target target, int distance) {
+    int shooting(Target target, int distance, double chance) {
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -392,7 +388,6 @@ public:
         int count_of_hits = 0;
         int patron = 0;
         double chance_checker;
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine; //Получаем количество патрон в магазине
 
         //Проходимся по всем доступным патронам
@@ -506,7 +501,7 @@ public:
     }
 
     //Функция стрельбы(для одинарного режима)
-    int shooting(Target target, int distance) {
+    int shooting(Target target, int distance, double chance) {
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -517,7 +512,6 @@ public:
         int count_of_hits = 0;
         int patron = 0;
         double chance_checker;
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine; //Получаем количество патрон в магазине
 
         //Проходимся по всем доступным патронам
@@ -630,7 +624,7 @@ public:
     }
 
     //Функция стрельбы(для одинарного режима)
-    int shooting(Target target, int distance) {
+    int shooting(Target target, int distance, double chance) {
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -641,7 +635,6 @@ public:
         int count_of_hits = 0;
         int patron = 0;
         double chance_checker;
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine; //Получаем количество патрон в магазине
 
         //Проходимся по всем доступным патронам
@@ -794,7 +787,7 @@ public:
     }
 
     //Функция стрельбы(для трех режимов)
-    int shooting(Target target, int distance) {
+    int shooting(Target target, int distance, double chance) {
         /*
         *@param count_of_hits - счетчик попаданий
         *@param patron - количество патронов в магазине
@@ -806,8 +799,6 @@ public:
         int patron = 0;
         double chance_checker;
 
-        //Получаем шанс
-        chance = chanceCalc(target.distance);
         int patrons = count_of_rounds_in_magazine;
 
         //Проходимся по всем доступным патронам
@@ -967,6 +958,9 @@ void simulationOfWeaponsTest(const int N, Weapon* all_weapons[]) {
             //Вывожу информацию о дистанции до мишени
             sr.my_targets[j].printDistance();
 
+            //Генерирую шанс попадания по цели
+            sr.my_targets[j].chanceCalc(all_weapons[i]->sighting_range);
+
             //Количество патронов по условию
             int ammo = 100;
 
@@ -975,9 +969,9 @@ void simulationOfWeaponsTest(const int N, Weapon* all_weapons[]) {
 
                 //Если в магазине есть патроны
                 if (all_weapons[i]->count_of_rounds_in_magazine > 0) {
-                    shoot = all_weapons[i]->shooting(sr.my_targets[j], sr.my_targets[j].distance);
-                    time += all_weapons[i]->time_for_shoot;
-                    bullets += shoot;
+                    shoot = all_weapons[i]->shooting(sr.my_targets[j], sr.my_targets[j].distance, sr.my_targets[j].chance); //Считаем попадания
+                    time += all_weapons[i]->time_for_shoot; //Считаем время
+                    bullets += shoot; //Итоговое количество попаданий
                 }
 
                 //Иначе нужно перезарядиться
