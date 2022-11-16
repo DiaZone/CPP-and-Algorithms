@@ -66,8 +66,8 @@ public:
         chance = (double)(1 / exp((distance - sighting_range) * 0.003));
 
         //Если у нас оружие стреляет дальше, чем стоит цель, то логично, что оно попадет в неё
-        if (chance > 1) {
-            chance = 1;
+        if (chance > 0.95) {
+            chance = 0.95;
         }
         cout << "Шанс попадания: " << chance << endl;
 
